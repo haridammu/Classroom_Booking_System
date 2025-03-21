@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classroom Booking</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #673ab7;
+            --secondary-color: #512da8;
+            --background-color: #303f9f;
+            --text-color: #fff;
+            --container-background: rgba(255, 255, 255, 0.1);
+            --font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            transition: background-color 0.5s ease;
+        }
+
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: -1;
+            animation: backgroundPulse 10s infinite alternate;
+        }
+
+        @keyframes backgroundPulse {
+            0% {
+                background-color: rgba(0, 0, 0, 0.4);
+            }
+            100% {
+                background-color: rgba(0, 0, 0, 0.6);
+            }
+        }
+
+        .container {
+            background: var(--container-background);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            backdrop-filter: blur(5px);
+            max-width: 400px;
+            width: 90%;
+            animation: fadeIn 1s ease-in-out, slideIn 0.5s ease forwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        h1, p {
+            opacity: 0;
+            animation: fadeInText 0.5s ease forwards;
+        }
+
+        h1 {
+            animation-delay: 0.2s;
+        }
+
+        p {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes fadeInText {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .button {
+            display: inline-block;
+            padding: 15px 30px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--text-color);
+            background: var(--primary-color);
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            animation: buttonPop 0.5s ease forwards;
+        }
+
+        @keyframes buttonPop {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .button:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+            animation: buttonBounce 0.3s ease;
+        }
+
+        @keyframes buttonBounce {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        .logout-button {
+            background-color: #d32f2f;
+        }
+
+        .logout-button:hover {
+            background-color: #c62828;
+        }
+
+        @media (max-width: 500px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            p {
+                font-size: 1rem;
+            }
+
+            .button {
+                padding: 12px 25px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-overlay"></div>
+    <div class="container">
+        <div class="content">
+            <h1>Classroom Booking System</h1>
+            {% if user.is_authenticated %}
+                <p id="greeting">Welcome, {{ user.username }}!</p>
+                <nav class="button-container">
+                    <a href="{% url 'book_room' %}" class="button">Book a Room</a>
+                    <a href="{% url 'view_schedule' %}" class="button">View Schedule</a>
+                    <a href="{% url 'logout' %}" class="button logout-button" id="logoutButton">Logout</a>
+                </nav>
+            {% else %}
+                <p>Please log in to continue.</p>
+                <a href="{% url 'login' %}" class="button">Login</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            const greetingElement = document.getElementById('greeting');
+            const logoutButton = document.getElementById('logoutButton');
+            const currentTime = new Date().getHours();
+            
+            // Get the username dynamically from Django's context
+            const username = "{{ user.username }}"; // Rendered into the page
+
+            // Set greeting text based on time of day
+            if (currentTime < 12) {
+                greetingElement.textContent = `Good Morning, ${username}!`;
+            } else if (currentTime < 18) {
+                greetingElement.textContent = `Good Afternoon, ${username}!`;
+            } else {
+                greetingElement.textContent = `Good Evening, ${username}!`;
+            }
+
+            // Add event listener for logout button
+            if (logoutButton) {
+                logoutButton.addEventListener('click', function(event) {
+                    const confirmLogout = confirm("Are you sure you want to logout?");
+                    if (!confirmLogout) {
+                        event.preventDefault(); // Prevent logout if user cancels
+                    }
+                });
+            }
+        };
+    </script>
+</body>
+</html>

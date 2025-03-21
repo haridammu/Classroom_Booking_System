@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Rooms</title>
+    <style>
+        /* Basic Styles for Room Management */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #1d2671;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        .back-link a {
+            text-decoration: none;
+            color: #1d2671;
+        }
+    </style>
+</head>
+<body>
+    <h1>Manage Rooms</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Capacity</th>
+                <th>Teacher</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for room in rooms %}
+                <tr>
+                    <td>{{ room.name }}</td>
+                    <td>{{ room.capacity }}</td>
+                    <td>{{ room.teacher }}</td>
+                    <td>{{ room.is_active|yesno:"Active,Inactive" }}</td>
+                    <td><a href="{% url 'edit_room' room.id %}">Edit</a> | 
+                        <a href="{% url 'delete_room' room.id %}" onclick="return confirm('Are you sure you want to delete this room?');">Delete</a></td>
+                    
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5">No rooms available.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="back-link">
+        <a href="{% url 'admin_dashboard' %}">Back to Dashboard</a>
+    </div>
+</body>
+</html>

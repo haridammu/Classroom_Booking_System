@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+
+    <!-- Link to Google Fonts for stylish text -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+
+        /* Container Style */
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            transform: scale(0);
+            animation: fadeInUp 0.8s ease-in-out forwards;
+        }
+
+        /* Heading Style */
+        h2 {
+            text-align: center;
+            font-size: 30px;
+            font-weight: 600;
+            color: #4CAF50;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+            animation: slideIn 1s ease-in-out;
+        }
+
+        /* Input Field Styling */
+        .input-field {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .input-field input,
+        .input-field select {
+            width: 100%;
+            padding: 18px 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            background-color: #fafafa;
+            transition: border-color 0.3s ease;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .input-field input:focus,
+        .input-field select:focus {
+            border-color: #4CAF50;
+            outline: none;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+        }
+
+        .input-field label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #777;
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            background-color: #fafafa;
+            padding: 0 5px;
+        }
+
+        .input-field input:focus + label,
+        .input-field select:focus + label,
+        .input-field input:not(:placeholder-shown) + label,
+        .input-field select:not(:placeholder-shown) + label {
+            top: -10px;
+            font-size: 12px;
+            color: #4CAF50;
+        }
+
+        /* Button Styling */
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        button:active {
+            background-color: #388e3c;
+        }
+
+        /* Error and Success Message */
+        .error, .success {
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .error {
+            color: #f44336;
+        }
+
+        .success {
+            color: #4CAF50;
+        }
+
+        /* Animations */
+        @keyframes slideIn {
+            0% {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px;
+            }
+            h2 {
+                font-size: 24px;
+            }
+            button {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Sign Up</h2>
+
+        <!-- Form Starts -->
+        <form method="POST" onsubmit="return validateForm()">
+            {% csrf_token %}
+
+            <!-- Username Field -->
+            <div class="input-field">
+                <input type="text" name="username" required>
+                <label for="username">Username</label>
+            </div>
+
+            <!-- Email Field -->
+            <div class="input-field">
+                <input type="email" name="email" required>
+                <label for="email">Email</label>
+            </div>
+
+            <!-- Password Field -->
+            <div class="input-field">
+                <input type="password" name="password1" required>
+                <label for="password1">Password</label>
+            </div>
+
+            <!-- Confirm Password Field -->
+            <div class="input-field">
+                <input type="password" name="password2" required>
+                <label for="password2">Confirm Password</label>
+            </div>
+
+            <!-- Role Selection -->
+            <div class="input-field">
+                <select name="role" required>
+                    <option value="">Select your role</option>
+                    <option value="Teacher">Teacher</option>
+                    <option value="Student">Student</option>
+                </select>
+                <label for="role">Role</label>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit">Sign Up</button>
+
+            <!-- Error and Success Messages -->
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="{{ message.tags }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </form>
+    </div>
+
+    <!-- JavaScript for real-time validation -->
+    <script>
+        function validateForm() {
+            var role = document.querySelector('select[name="role"]').value;
+            if (!role) {
+                alert("Please select a role.");
+                return false;
+            }
+            return true;
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff6a00, #ee0979);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            color: white;
+            padding: 0;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(15px);
+            width: 450px;
+            transition: all 0.3s ease;
+        }
+        .container:hover {
+            transform: scale(1.05);
+        }
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+        a {
+            display: block;
+            margin: 12px 0;
+            color: #ffcc00;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        a:hover {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+        .welcome-message {
+            margin-bottom: 25px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+        .info-box {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        .info-box p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Teacher Dashboard</h1>
+
+        {% if user.is_authenticated %}
+            <p class="welcome-message">Welcome, {{ user.username }} (Teacher)</p>
+
+            <!-- Info Box to show the role and any important message -->
+            <div class="info-box">
+                <p>You are logged in as a Teacher. Here you can manage your classroom bookings, view schedules, and more.</p>
+            </div>
+
+            <!-- Links for teacher actions -->
+            <a href="{% url 'book_room' %}">Book a Classroom</a>
+            <a href="{% url 'view_schedule' %}">View My Bookings</a>
+            <a href="{% url 'manage_rooms' %}">Manage Rooms</a>
+            <a href="{% url 'logout' %}">Logout</a>
+
+            <!-- Back to Teacher Dashboard Link -->
+            <a href="{% url 'teacher_dashboard' %}">Back to Dashboard</a>
+        {% else %}
+            <p>You must be logged in to access the Teacher Dashboard.</p>
+            <a href="{% url 'login' %}">Login</a>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Room</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff6a00, #ee0979);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 100%;
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: scale(1.05);
+        }
+
+        h1 {
+            font-size: 32px;
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        form button {
+            padding: 12px 20px;
+            background-color: #ff6a00;
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        form button:hover {
+            background-color: #ee0979;
+        }
+
+        form input,
+        form select {
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #ff6a00;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #ee0979;
+        }
+
+        .confirmation-message {
+            display: none;
+            padding: 10px;
+            background-color: #4caf50;
+            color: white;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Edit Room</h1>
+        
+        <form method="POST" id="edit-room-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" id="submit-button">Save Changes</button>
+        </form>
+
+        <a href="{% url 'manage_rooms' %}">Back to Room Management</a>
+
+        <div class="confirmation-message" id="confirmation-message">
+            Your changes have been saved successfully!
+        </div>
+    </div>
+
+    <script>
+        // Handle form submission and display confirmation message
+        const form = document.getElementById('edit-room-form');
+        const submitButton = document.getElementById('submit-button');
+        const confirmationMessage = document.getElementById('confirmation-message');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();  // Prevent form submission to simulate the save process
+
+            // Show the confirmation message after form submission
+            confirmationMessage.style.display = 'block';
+            
+            // Simulate a successful form submission with a slight delay
+            setTimeout(function() {
+                confirmationMessage.style.display = 'none';
+                form.submit(); // Actually submit the form after the confirmation
+            }, 2000); // Hide confirmation message after 2 seconds
+        });
+    </script>
+
+</body>
+</html>

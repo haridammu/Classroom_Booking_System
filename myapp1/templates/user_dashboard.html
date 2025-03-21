@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #2b5876, #4e4376);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            color: white;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(15px);
+            width: 400px;
+            max-width: 90%;
+        }
+
+        h1, h2 {
+            margin: 15px 0;
+            font-size: 28px;
+            color: #ffcc00;
+        }
+
+        p, li {
+            margin: 8px 0;
+            font-size: 18px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .card {
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .no-data {
+            margin: 15px 0;
+            font-size: 20px;
+            color: #ffcc00;
+        }
+
+        a {
+            display: inline-block;
+            margin: 15px 10px;
+            padding: 12px 20px;
+            color: #ffffff;
+            background-color: #ffcc00;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #e6b800;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Student Dashboard</h1>
+        <p>Welcome, {{ user.username }} (Student)</p>
+
+        <h2>Booked Rooms</h2>
+        {% if student_bookings %}
+            {% for booking in student_bookings %}
+                <div class="card">
+                    <h3>Room: {{ booking.room.name }}</h3>
+                    <p>Date: {{ booking.date }}</p>
+                    <p>Time: {{ booking.time_slot }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-data">No booked rooms yet.</p>
+        {% endif %}
+
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Bookings</title>
+    <style>
+        /* Basic Styles for Table Display */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #1d2671;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        .back-link a {
+            text-decoration: none;
+            color: #1d2671;
+        }
+    </style>
+</head>
+<body>
+    <h1>All Bookings</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Room</th>
+                <th>User</th>
+                <th>Date</th>
+                <th>Booked By</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for booking in bookings %}
+                <tr>
+                    <td>{{ booking.room.name }}</td>
+                    <td>{{ booking.user.username }}</td>
+                    <td>{{ booking.date }}</td>
+                    <td>{{ booking.booked_by }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4">No bookings available.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="back-link">
+        <a href="{% url 'admin_dashboard' %}">Back to Dashboard</a>
+    </div>
+</body>
+</html>
